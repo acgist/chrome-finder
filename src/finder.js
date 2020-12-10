@@ -1,19 +1,26 @@
 // 默认配置
 var config = {};
+// 是否查找
+var matchRule = false;
+// 选中元素样式
 var matchClass = " finder-match";
 
 // 监听background消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request) {
-		console.log("finder-收到消息：%o-%o", sender, request);
+		console.log("finder-收到消息：%s-%s", request.type, JSON.stringify(sender));
 		if (request.type == "find") {
 			match();
 			sendResponse({ "type": "success" });
+		} else if (request.type == "config") {
+			config = request.config;
+			console.log("finder-收到消息-更新配置：%s", JSON.stringify(config));
+			sendResponse({ "type": "success" });
 		} else {
-			console.error("finder-收到消息-类型错误：%o", request);
+			console.warn("finder-收到消息-类型错误：%s", JSON.stringify(request));
 		}
 	} else {
-		console.error("finder-收到消息-格式错误：%o", request);
+		console.warn("finder-收到消息-格式错误：%o", request);
 	}
 });
 
@@ -23,14 +30,14 @@ chrome.runtime.sendMessage(
 	function(response) {
 		if (response) {
 			config = response;
-			console.log("finder-获取配置：%o", config);
+			console.log("finder-获取配置：%s", JSON.stringify(config));
 		} else {
-			console.error("finder-获取配置失败");
+			console.warn("finder-获取配置-失败：%o", response);
 		}
 	}
 );
 
-// 监听页面事件：Ctrl+Q
+// 监听页面事件：Ctrl + Q
 document.onkeydown = function(e) {
 	var ctrlKey = e.ctrlKey || e.metaKey;
 	var keyCode = e.keyCode || e.which || e.charCode;
@@ -42,6 +49,7 @@ document.onkeydown = function(e) {
 
 // 查找数据
 function match() {
+	matchRule = !matchRule;
 	if (config) {
 		var list = [];
 		var elements = document.getElementsByTagName(config.match);
@@ -58,12 +66,16 @@ function match() {
 			}
 		}
 		for (var element of list) {
-			console.log("选中连接：%s", element.href)
+			console.log("选择连接：%s", element.href)
 			var className = element.className;
-			if(className.indexOf(matchClass) >= 0) {
-				element.className = className.substring(0, className.indexOf(matchClass));
+			if(matchRule) {
+				if (!className || className.indexOf(matchClass) < 0) {
+					element.className += matchClass;
+				}
 			} else {
-				element.className += matchClass;
+				if (className && className.indexOf(matchClass) >= 0) {
+					element.className = className.substring(0, className.indexOf(matchClass));
+				}
 			}
 		}
 	}

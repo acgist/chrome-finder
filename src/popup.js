@@ -1,27 +1,35 @@
-// 配置信息
+// 默认匹配规则：匹配所有规则
 var allRule = "匹配规则";
+// background对象
 var background = chrome.extension.getBackgroundPage();
+// 获取配置信息
 var config = background.config;
 
-// 初始元素
+// 选择规则节点
 var ruleElement = document.getElementById("rule");
+// 匹配元素节点
 var matchElement = document.getElementById("match");
+// 更新按钮节点
 var updateElement = document.getElementById("update");
+// 删除按钮节点
 var deleteElement = document.getElementById("delete");
+// 规则名称节点
 var ruleKeyElement = document.getElementById("ruleKey");
+// 规则文本节点
 var ruleValueElement = document.getElementById("ruleValue");
 
-// 初始规则
+// 初始页面
 function init() {
-	// 设置匹配
+	// 设置匹配原始
 	matchElement.value = config.match;
-	// 删除节点
+	// 删除所有选择节点
 	var childNodes = ruleElement.childNodes;
 	for (var index = childNodes.length - 1; index >= 0; index--) {
 		ruleElement.removeChild(childNodes[index]);
 	}
-	// 设置规则
+	// 添加所有选择节点
 	var selectRule = config.rule;
+	var options = [];
 	for (var ruleKey in config.rules) {
 		var option = document.createElement("option");
 		option.innerText = ruleKey;
@@ -31,23 +39,37 @@ function init() {
 			ruleKeyElement.value = ruleKey;
 			ruleValueElement.value = config.rules[ruleKey].join('\n');
 		}
+		options[options.length] = option;
+	}
+	options.sort(function(a, b) {
+		var aValue = a.innerText;
+		var bValue = b.innerText;
+		if(aValue == allRule) {
+			return -1;
+		} else if(bValue == allRule) {
+			return 1;
+		} else {
+			return aValue.length - bValue.length;
+		}
+	});
+	for (var option of options) {
 		ruleElement.appendChild(option);
 	}
 }
 
 // 选择规则
 function selectRule() {
-	// 选中规则
+	// 设置选择规则
 	config.rule = ruleElement.value;
-	console.log("popup-选中规则：%s", config.rule);
+	console.log("popup-选择规则：%s", config.rule);
 }
 
 // 更新规则
 function updateRule() {
-	// 设置匹配
-	config.match = matchElement.value;
-	// 选中规则
-	config.rule = ruleKeyElement.value;
+	// 选择选择规则
+	var rule = ruleKeyElement.value;
+	// 设置匹配元素
+	var match = matchElement.value;
 	// 设置规则
 	var ruleKey = ruleKeyElement.value;
 	var ruleValue = ruleValueElement.value;
@@ -58,38 +80,45 @@ function updateRule() {
 			rules[rules.length] = rule;
 		}
 	}
+	if(!match || !ruleKey || !ruleValue) {
+		console.warn("popup-更新规则-失败：%s-%s-%s", match, ruleKey, ruleValue);
+		return;
+	}
+	config.rule = rule;
+	config.match = match;
 	config.rules[ruleKey] = rules;
-	console.log("popup-更新规则：%s-%o", ruleKey, rules);
-	background.persist(config);
+	console.log("popup-更新规则：%s-%s", ruleKey, JSON.stringify(rules));
 }
 
 // 删除规则
 function deleteRule() {
 	var ruleKey = ruleKeyElement.value;
 	if (ruleKey == allRule) {
-		console.log("popup-禁止删除");
+		console.warn("popup-删除规则-失败：%s", ruleKey);
 		return;
 	}
 	delete config.rules[ruleKey];
 	config.rule = allRule;
 	console.log("popup-删除规则：%s", ruleKey);
-	background.persist(config);
 }
 
 // 选择事件
 ruleElement.onchange = function() {
 	selectRule();
 	init();
+	background.persist(config);
 }
 // 更新事件
 updateElement.onclick = function() {
 	updateRule();
 	init();
+	background.persist(config);
 }
 // 删除事件
 deleteElement.onclick = function() {
 	deleteRule();
 	init();
+	background.persist(config);
 }
 
 // 初始配置
