@@ -58,7 +58,7 @@ function match() {
 		}
 		for (var element of list) {
 			console.log("选中连接：%s", element.href)
-			element.id = "finder-match";
+			element.className = "finder-match";
 		}
 	}
 }
