@@ -1,5 +1,6 @@
 // 默认配置
 var config = {};
+var matchClass = " finder-match";
 
 // 监听background消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -58,7 +59,12 @@ function match() {
 		}
 		for (var element of list) {
 			console.log("选中连接：%s", element.href)
-			element.className = "finder-match";
+			var className = element.className;
+			if(className.indexOf(matchClass) >= 0) {
+				element.className = className.substring(0, className.indexOf(matchClass));
+			} else {
+				element.className += matchClass;
+			}
 		}
 	}
 }
