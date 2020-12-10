@@ -1,0 +1,24 @@
+::selection{background:#1ABC9C;color:#fff;}
+@media screen and (min-width:800px){html{font-size:16px;}}
+@media screen and (min-width:1200px){html{font-size:18px;}}
+@media screen and (min-width:1600px){html{font-size:20px;}}
+*{margin:0;padding:0;border:none;outline:none;box-sizing:content-box;}
+html{background:#FFFFFF;/*filter:grayscale(100%);*/width:30rem;height:auto;padding:2rem;}
+html, body{font-family:Arial,Consolas,SimSun,"宋体";color:#222;font-weight:normal;}
+body{width:100%;height:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);font-size:1rem;}
+a{color:#008CBA;}
+a:link{text-decoration:none;}
+a:hover{color:#0078A0;}
+a:visited{text-decoration:none;}
+ol, ul, li{list-style:none;}
+input, select{box-shadow:0px 0px 3px 0px rgba(0,0,0,0.15) inset;border:1px solid rgba(0,0,0,0.15)!important;padding:0.4rem;}
+input:focus, input:hover, select:focus, select:hover{border:1px solid #1ABC9C!important;}
+textarea{box-shadow:0px 0px 3px 0px rgba(0,0,0,0.15) inset;border:1px solid rgba(0,0,0,0.15)!important;padding:0.4rem;}
+textarea:hover, textarea:focus{border:1px solid #1ABC9C!important;}
+button{background:#666;cursor:pointer;margin:2px 4px;padding:6px 10px;color:#fff;border-radius:2px;}
+button:hover{background:#555;}
+.header{text-align:center;}
+.footer{text-align:center;}
+.main{text-align:center;}
+.main li{margin:0.4rem 0;}
+.main input, .main select, .main textarea{width:20rem;}
