@@ -28,8 +28,11 @@
 				<textarea id="ruleValue" rows="10" cols="20" placeholder="规则文本"></textarea>
 			</li>
 			<li>
-				<button class="update" id="update">修改</button>
-				<button class="delete" id="delete">删除</button>
+				<input class="hidden" id="loadFile" type="file" accept="text/plain,application/json" />
+				<button class="update" id="update">更新规则</button>
+				<button class="delete" id="delete">删除规则</button>
+				<button class="backup" id="backup">备份配置</button>
+				<button class="load" id="load">导入配置</button>
 			</li>
 		</ul>
 	</main>

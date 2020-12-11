@@ -5,18 +5,24 @@ var background = chrome.extension.getBackgroundPage();
 // 获取配置信息
 var config = background.config;
 
-// 选择规则节点
-var ruleElement = document.getElementById("rule");
 // 匹配元素节点
 var matchElement = document.getElementById("match");
-// 更新按钮节点
-var updateElement = document.getElementById("update");
-// 删除按钮节点
-var deleteElement = document.getElementById("delete");
+// 选择规则节点
+var ruleElement = document.getElementById("rule");
 // 规则名称节点
 var ruleKeyElement = document.getElementById("ruleKey");
 // 规则文本节点
 var ruleValueElement = document.getElementById("ruleValue");
+// 更新按钮节点
+var updateElement = document.getElementById("update");
+// 删除按钮节点
+var deleteElement = document.getElementById("delete");
+// 备份按钮节点
+var backupElement = document.getElementById("backup");
+// 导入按钮节点
+var loadElement = document.getElementById("load");
+// 导入文件节点
+var loadFileElement = document.getElementById("loadFile");
 
 // 初始页面
 function init() {
@@ -101,6 +107,39 @@ function deleteRule() {
 	console.log("popup-删除规则：%s", ruleKey);
 }
 
+// 备份配置
+function backup() {
+	//	var data = new Blob([JSON.stringify(config)], { type: "text/plain;charset=utf-8" });
+	var data = new Blob([JSON.stringify(config)], { type: "application/json;charset=utf-8" });
+	var downloadUrl = window.URL.createObjectURL(data);
+	var anchor = document.createElement("a");
+	anchor.href = downloadUrl;
+	anchor.download = "chrome-finder-config.json";
+	anchor.click();
+	window.URL.revokeObjectURL(data);
+}
+
+// 导入配置
+function load() {
+	loadFileElement.click();
+}
+
+// 加载配置
+function loadFile(event) {
+	var reader = new FileReader();
+	reader.readAsText(event.target.files[0]);
+	reader.onload = function() {
+		var result = this.result;
+		try {
+			config = JSON.parse(result);
+			init();
+			background.persist(config);
+		} catch (e) {
+			console.log("popup-加载配置-异常：%s", result);
+		}
+	}
+}
+
 // 选择事件
 ruleElement.onchange = function() {
 	selectRule();
@@ -118,6 +157,21 @@ deleteElement.onclick = function() {
 	deleteRule();
 	init();
 	background.persist(config);
+}
+
+// 备份事件
+backupElement.onclick = function() {
+	backup();
+}
+
+// 导入事件
+loadElement.onclick = function() {
+	load();
+}
+
+// 加载事件
+loadFileElement.onchange = function(e) {
+	loadFile(e);
 }
 
 // 初始配置
