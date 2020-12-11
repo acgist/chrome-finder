@@ -15,6 +15,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		console.log("background-收到消息：%s-%s", request.type, JSON.stringify(sender));
 		if (request.type == "config") {
 			sendResponse(buildFinderConfig());
+		} else if(request.type == "size") {
+			matchSize(request.size);
 		} else {
 			console.warn("background-收到消息-类型错误：%s", JSON.stringify(request));
 		}
@@ -78,6 +80,12 @@ function buildFinderConfig() {
 		rules = config.rules[config.rule];
 	}
 	return { "match": config.match, "rules": rules };
+}
+
+// 查找结果
+function matchSize(size) {
+	chrome.browserAction.setBadgeText({"text": size.toString()});
+	chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});
 }
 
 // 初始配置
