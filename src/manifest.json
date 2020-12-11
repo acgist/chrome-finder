@@ -6,6 +6,7 @@
 	"manifest_version": 2,
 	"icons": {
 		"16": "icon_16.png",
+		"32": "icon_32.png",
 		"48": "icon_32.png",
 		"128": "icon_32.png"
 	},
@@ -24,8 +25,10 @@
 	],
 	"browser_action": {
 		"default_icon": {
-			"19": "icon_16.png",
-			"38": "icon_32.png"
+			"16": "icon_16.png",
+			"32": "icon_32.png",
+			"48": "icon_32.png",
+			"128": "icon_32.png"
 		},
 		"default_title": "Chrome-Finder",
 		"default_popup": "popup.html"

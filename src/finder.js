@@ -68,7 +68,7 @@ function match() {
 		for (var element of list) {
 			console.log("选择连接：%s", element.href)
 			var className = element.className;
-			if(matchRule) {
+			if (matchRule) {
 				if (!className || className.indexOf(matchClass) < 0) {
 					element.className += matchClass;
 				}

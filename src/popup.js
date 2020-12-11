@@ -41,12 +41,13 @@ function init() {
 		}
 		options[options.length] = option;
 	}
+	// 节点排序
 	options.sort(function(a, b) {
 		var aValue = a.innerText;
 		var bValue = b.innerText;
-		if(aValue == allRule) {
+		if (aValue == allRule) {
 			return -1;
-		} else if(bValue == allRule) {
+		} else if (bValue == allRule) {
 			return 1;
 		} else {
 			return aValue.length - bValue.length;
@@ -66,8 +67,6 @@ function selectRule() {
 
 // 更新规则
 function updateRule() {
-	// 选择选择规则
-	var rule = ruleKeyElement.value;
 	// 设置匹配元素
 	var match = matchElement.value;
 	// 设置规则
@@ -80,11 +79,11 @@ function updateRule() {
 			rules[rules.length] = rule;
 		}
 	}
-	if(!match || !ruleKey || !ruleValue) {
+	if (!match || !ruleKey || !ruleValue) {
 		console.warn("popup-更新规则-失败：%s-%s-%s", match, ruleKey, ruleValue);
 		return;
 	}
-	config.rule = rule;
+	config.rule = ruleKey;
 	config.match = match;
 	config.rules[ruleKey] = rules;
 	console.log("popup-更新规则：%s-%s", ruleKey, JSON.stringify(rules));
