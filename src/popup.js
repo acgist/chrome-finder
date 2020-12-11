@@ -135,7 +135,7 @@ function loadFile(event) {
 			init();
 			background.persist(config);
 		} catch (e) {
-			console.log("popup-加载配置-异常：%s", result);
+			console.log("popup-加载配置-异常：%s-%o", result, e);
 		}
 	}
 }
