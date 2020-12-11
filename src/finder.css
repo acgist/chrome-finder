@@ -1,3 +1,4 @@
-.finder-match{color:#fff!important;background:#C00!important;}
-.finder-match *{color:#fff!important;background:#C00!important;}
-* .finder-match{color:#fff!important;background:#C00!important;}
+.finder-match{color:#FFF!important;background:#C00!important;position:relative!important;overflow:visible!important;}
+.finder-match *{color:#FFF!important;background:#C00!important;position:relative!important;overflow:visible!important;}
+* .finder-match{color:#FFF!important;background:#C00!important;position:relative!important;overflow:visible!important;}
+.finder-match:before{color:#FFF;background:#494;position:absolute;content:'😍';display:block;width:auto;height:100%;padding:0 10px;top:0;left:100%;}
