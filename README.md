@@ -8,4 +8,5 @@ Chrome浏览器多关键词搜索
 
 #### 效果
 
-![chrome-finder](./chrome-finder.png)
+![setting](./docs/setting.png)
+![chrome-finder](./docs/chrome-finder.png)
