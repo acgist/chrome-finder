@@ -24,7 +24,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
-// TODO：封装
 // 获取配置
 chrome.runtime.sendMessage(
 	{ "type": "config" },
