@@ -22,5 +22,5 @@ button:hover{opacity:0.8;}
 .main{text-align:center;}
 .main li{margin:0.4rem 0;}
 .main input, .main select, .main textarea{width:20rem;}
-.main .update{background:#549;}
+.main .update{background:#1B9;}
 .main .delete{background:#C00;}
