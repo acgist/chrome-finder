@@ -9,13 +9,13 @@ var config = {
 	}
 }
 
-// 监听content-script消息：页面JS消息
+// 添加content-script监听
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request) {
 		console.log("background-收到消息：%s-%s", request.type, JSON.stringify(sender));
 		if (request.type == "config") {
 			sendResponse(buildFinderConfig());
-		} else if(request.type == "size") {
+		} else if (request.type == "size") {
 			matchSize(request.size);
 		} else {
 			console.warn("background-收到消息-类型错误：%s", JSON.stringify(request));
@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
-// 右键菜单消息
+// 添加右键菜单
 chrome.contextMenus.create({
 	"title": "Chrome-Finder",
 	"onclick": function() {
@@ -35,13 +35,11 @@ chrome.contextMenus.create({
 	}
 });
 
-// 初始配置信息
-function init() {
-	chrome.storage.local.get({ "config": config }, function(data) {
-		console.log("background-加载配置：%s", JSON.stringify(data));
-		config = data.config;
-	});
-}
+// 加载配置信息
+chrome.storage.local.get({ "config": config }, function(data) {
+	console.log("background-加载配置：%s", JSON.stringify(data));
+	config = data.config;
+});
 
 // 保存配置信息
 function persist(data) {
@@ -55,7 +53,7 @@ function persist(data) {
 	});
 }
 
-// 发送content-script消息：页面JS消息
+// 发送content-script消息
 function sendMessageToContentScript(message, callback) {
 	chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
 		chrome.tabs.sendMessage(tabs[0].id, message, function(response) {
@@ -66,10 +64,9 @@ function sendMessageToContentScript(message, callback) {
 	});
 }
 
-// 创建页面需要配置
+// 创建页面配置
 function buildFinderConfig() {
-	// 返回匹配规则
-	var rules = [];
+	var rules = []; // 返回匹配规则
 	if (config.rule == allRule) {
 		for (var ruleKey in config.rules) {
 			for (var rule of config.rules[ruleKey]) {
@@ -84,9 +81,6 @@ function buildFinderConfig() {
 
 // 查找结果
 function matchSize(size) {
-	chrome.browserAction.setBadgeText({"text": size.toString()});
-	chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});
+	chrome.browserAction.setBadgeText({ "text": size.toString() });
+	chrome.browserAction.setBadgeBackgroundColor({ "color": [255, 0, 0, 255] });
 }
-
-// 初始配置
-init();

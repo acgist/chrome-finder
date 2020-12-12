@@ -78,6 +78,7 @@ function match() {
 				}
 			}
 		}
-		chrome.runtime.sendMessage({ "type": "size", "size": list.length });
+		var size = matchRule ? list.length : 0;
+		chrome.runtime.sendMessage({ "type": "size", "size": size });
 	}
 }

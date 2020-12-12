@@ -1,6 +1,6 @@
 // 默认匹配规则：匹配所有规则
 var allRule = "匹配规则";
-// background对象
+// 获取background对象
 var background = chrome.extension.getBackgroundPage();
 // 获取配置信息
 var config = background.config;
@@ -24,8 +24,8 @@ var loadElement = document.getElementById("load");
 // 导入文件节点
 var loadFileElement = document.getElementById("loadFile");
 
-// 初始页面
-function init() {
+// 刷新页面
+function refreshPage() {
 	// 设置匹配原始
 	matchElement.value = config.match;
 	// 删除所有选择节点
@@ -132,7 +132,7 @@ function loadFile(event) {
 		var result = this.result;
 		try {
 			config = JSON.parse(result);
-			init();
+			refreshPage();
 			background.persist(config);
 		} catch (e) {
 			console.log("popup-加载配置-异常：%s-%o", result, e);
@@ -143,19 +143,19 @@ function loadFile(event) {
 // 选择事件
 ruleElement.onchange = function() {
 	selectRule();
-	init();
+	refreshPage();
 	background.persist(config);
 }
 // 更新事件
 updateElement.onclick = function() {
 	updateRule();
-	init();
+	refreshPage();
 	background.persist(config);
 }
 // 删除事件
 deleteElement.onclick = function() {
 	deleteRule();
-	init();
+	refreshPage();
 	background.persist(config);
 }
 
@@ -174,5 +174,5 @@ loadFileElement.onchange = function(e) {
 	loadFile(e);
 }
 
-// 初始配置
-init();
+// 刷新页面
+refreshPage();
