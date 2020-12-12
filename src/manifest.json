@@ -1,6 +1,6 @@
 {
 	"name": "Chrome-Finder",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Chrome浏览器多关键词搜索",
 	"homepage_url": "https://gitee.com/acgist/chrome-finder",
 	"manifest_version": 2,
