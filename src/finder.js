@@ -52,7 +52,16 @@ function match() {
 	matchRule = !matchRule;
 	if (config) {
 		var list = [];
-		var elements = document.getElementsByTagName(config.match);
+		var elements = [];
+		// 查找元素
+		var matchs = config.match.split(',');
+		for(var match of matchs) {
+			var matchElements = document.getElementsByTagName(match.trim());
+			for (var element of matchElements) {
+				elements[elements.length] = element;
+			}
+		}
+		// 匹配元素
 		for (var element of elements) {
 			for (var rule of config.rules) {
 				if (element && rule) {
@@ -65,8 +74,8 @@ function match() {
 				}
 			}
 		}
+		// 添加样式
 		for (var element of list) {
-			console.log("选择连接：%s", element.href)
 			var className = element.className;
 			if (matchRule) {
 				if (!className || className.indexOf(matchClass) < 0) {
@@ -78,6 +87,7 @@ function match() {
 				}
 			}
 		}
+		// 匹配数量
 		var size = matchRule ? list.length : 0;
 		chrome.runtime.sendMessage({ "type": "size", "size": size });
 	}
